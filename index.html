@@ -27,7 +27,7 @@
 
   <section class="hero" id="top">
     <p class="eyebrow">E-INK READER · RDP-G01-W · ESP32-S3</p>
-    <h1>页屿 <em>PageIsle</em></h1>
+    <h1 id="brand" title="页屿 PageIsle">页屿 <em>PageIsle</em></h1>
     <p class="lead">为 684×1216 电子墨水屏打磨的阅读系统：坚果云同步、Markdown 排版阅读、Obsidian 互通、可配置手势。用一根 USB 线，在浏览器里直接刷入。</p>
     <ul class="chips">
       <li>坚果云同步</li><li>Markdown 阅读</li><li>Obsidian 互通</li><li>手势配置</li>
@@ -520,6 +520,26 @@
 
 </main>
 
+  <!-- beta-channel -->
+  <section id="beta" class="wrap" style="display:none;padding-top:8px">
+    <div class="card" style="border:1px solid #b9a98a">
+      <h2 style="margin-top:0">内测版 · 页屿系统 1.15.45</h2>
+      <p class="hint">这是隐藏通道的内测固件（1.15.45 · 2026-11-01），与正式版同一套刷机流程；
+        确认框里同样<b>不要勾选 Erase device</b>。正式版仍在上方「浏览器一键刷机」。</p>
+      <table>
+        <tr><th>内测版本</th><td>页屿系统 1.15.45</td></tr>
+        <tr><th>镜像</th><td>3,651,984 字节</td></tr>
+        <tr><th>sha256</th><td><code>ad013ea5ece895bf9e141fc876f8f44da7868fe1b51a69a8af2bfccef6f044e9</code></td></tr>
+      </table>
+      <esp-web-install-button manifest="beta/firmware/manifest.json">
+        <button class="flash-btn" slot="activate">刷入内测版</button>
+        <span class="unsupported" slot="unsupported">当前浏览器不支持 Web Serial，请改用电脑版 Chrome 或 Edge。</span>
+        <span class="not-allowed" slot="not-allowed">页面必须通过 HTTPS 或 localhost 打开才能刷机。</span>
+      </esp-web-install-button>
+      <p class="hint">内测版用于尝鲜与验证；确认稳定后才会并入正式版一键刷机。</p>
+    </div>
+  </section>
+
 <footer>
   <div class="wrap">
     <p>页屿系统 1.15.44 · 2026-10-31 ｜ 页屿 PageIsle · 0.3.3-rc99 · 镜像 4,086,416 字节 · sha256 2aecc07f241beaaf…608aef</p>
@@ -554,6 +574,29 @@ document.querySelectorAll('code').forEach(function (el) {
     });
   });
 });
+</script>
+<script>
+// 隐藏内测通道：在首页连续点击 5 次「页屿 PageIsle」标志显示出来。
+(function () {
+  var logo = document.getElementById('brand');
+  if (!logo) return;
+  var clicks = 0, timer = 0;
+  logo.style.cursor = 'pointer';
+  logo.addEventListener('click', function () {
+    clicks += 1;
+    clearTimeout(timer);
+    timer = setTimeout(function () { clicks = 0; }, 2500);
+    if (clicks >= 5) {
+      clicks = 0;
+      var beta = document.getElementById('beta');
+      if (beta) {
+        var shown = beta.style.display !== 'none';
+        beta.style.display = shown ? 'none' : 'block';
+        if (!shown) beta.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+    }
+  });
+})();
 </script>
 </body>
 </html>
