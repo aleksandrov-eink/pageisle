@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>页屿 PageIsle · 刷机与功能介绍</title>
-<meta name="description" content="页屿 PageIsle · Metalio S31 自定义固件：浏览器一键刷机（USB 有线），在官方 kiikoread 0.3.3-rc109 之上新增 Markdown 书源、阅读页划线/高亮、Pico 同屏系统刷新模式与防泛黑、睡眠安全修复、字体恢复保护修复，可回退官方原包。">
+<meta name="description" content="页屿 PageIsle · Metalio S31 自定义固件：浏览器一键刷机（USB 有线），在官方 kiikoread 0.3.3-rc109 之上新增 Markdown 书源、阅读页划线/高亮、Pico 同屏系统刷新模式、清残影算法、四档翻页与防泛黑、睡眠安全修复、字体恢复保护修复，可回退官方原包。">
 <meta name="theme-color" content="#f6f2e7">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
@@ -34,7 +34,7 @@
       <b>Pico 同屏的整套系统刷新模式</b>（主页普通/快刷/水波纹、水波纹 41 相表、锁屏/浅睡防泛黑、Pico 自适应扫描时序）；分区表、引导程序与 OTA 布局与官方一致，可浏览器一键刷入，也可随时刷回官方原包。</p>
     <ul class="chips">
       <li>Markdown 阅读</li><li>字级划线/高亮</li><li>系统刷新模式 · Pico 同屏</li><li>锁屏防泛黑</li><li>自建在线 OTA</li>
-      <li>TXT / EPUB</li><li>面板时钟 20/24MHz A/B</li><li>16 MB flash</li><li>可回退官方包</li>
+      <li>TXT / EPUB</li><li>四档翻页</li><li>面板时钟 20/24MHz A/B</li><li>16 MB flash</li><li>可回退官方包</li>
     </ul>
   </section>
 
@@ -98,11 +98,11 @@
 
       <h2 style="margin-top:26px">固件信息</h2>
       <table class="meta">
-        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.59）</td></tr>
-        <tr><th>版本号</th><td>1.15.59（基于官方 0.3.3-rc109）</td></tr>
-        <tr><th>应用镜像</th><td>5,048,384 字节</td></tr>
-        <tr><th>ota_0 余量</th><td>194,496 字节（3.7%）</td></tr>
-        <tr><th>sha256</th><td><code>a36424cea5be710fc0736ae7571adeb890e4632cca4319b32a7f6de510b4af6f</code></td></tr>
+        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.60）</td></tr>
+        <tr><th>版本号</th><td>1.15.60（基于官方 0.3.3-rc109）</td></tr>
+        <tr><th>应用镜像</th><td>5,050,352 字节</td></tr>
+        <tr><th>ota_0 余量</th><td>192,528 字节（3.7%）</td></tr>
+        <tr><th>sha256</th><td><code>71a2263bab5c9f151d43bae2a4fd3744308d9da7a2639efa4217026624608cd8</code></td></tr>
         <tr><th>在线更新源</th><td>页屿自建 <code>metalio/update.json</code>（不再走官方源，官方包不会再覆盖本机固件）</td></tr>
         <tr><th>官方回退包</th><td><a href="firmware/official-rc109-original.bin">official-rc109-original.bin</a> · 5,004,960 字节 · sha256 <code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
       </table>
@@ -121,11 +121,11 @@
 
   <section id="features">
     <h2>功能介绍</h2>
-    <p class="section-lead">本固件 = 官方 kiikoread 0.3.3-rc109 + <b>六项页屿能力</b>：Markdown 书源、阅读页字级划线/高亮、
+    <p class="section-lead">本固件 = 官方 kiikoread 0.3.3-rc109 + <b>七项页屿能力</b>：Markdown 书源、阅读页字级划线/高亮、
       阅读背景图自动去白、异常恢复模式字体修复，以及 1.15.56 新增的「Pico 同屏整套系统刷新模式」与「锁屏/浅睡防泛黑 + Pico 自适应扫描时序」。
       低层驱动（总线/DMA/PIE 像素/电源轨/VCOM）仍为 S31 官方实现；刷新策略、波形选择与时序调教按 Pico 同屏移植。</p>
 
-    <h3 class="feat-group"><span>本次新增</span> 六项能力</h3>
+    <h3 class="feat-group"><span>本次新增</span> 七项能力</h3>
     <div class="cards">
       <article class="promo-card">
         <div class="promo-no">01</div>
@@ -189,6 +189,10 @@
           <li><b>设置页滚动修复（1.15.57）</b>：列表滚动改 Pico 45 相单表差分，去掉上下双强度与每 8 次整区重写；滚动停止后整页 settle（含页头），修复「下部越滚越白、上部立刻变黑」。</li>
           <li><b>睡眠安全修复（1.15.58）</b>：修复 1.15.56/57 浅睡防泛黑与「到点关机」交接的 bug（可能提前硬关机/睡死）；默认关闭锁屏/浅睡防泛黑，睡眠/关机行为与 1.15.55 完全一致。</li>
           <li>串口日志：<code>scan full 20 MHz … CKV …</code>、<code>reader turn waveform=pico-water41 phases=41</code>、<code>settings scroll pico45 …</code>。</li>
+        
+          <li><b>Pico 清残影算法 + 四档翻页（1.15.59）</b>：轻活动清理（页计数+时间+活动判定）、GC16/白推升级与归零、白修复；阅读翻页四档：普通·快刷 / 普通·高清 / 水波纹·快刷 / 水波纹·高清（旧设置自动迁移，HD 失败自动回退）。</li>
+          <li><b>波形装配（1.15.59）</b>：默认按 Pico 装配（去掉额外白/黑过驱补帧），一条编译宏可切回官方；串口开机打印装配指纹。</li>
+          <li><b>1.15.60 交互/稳定</b>：设置页滚动停手 settle 默认关闭（消除 0.64 秒同步刷新导致的慢/误触）、触摸采样延迟诊断；清残影整屏 GC16 改空闲执行；字体重试去轮询+30 秒退避；屏幕修复 2 遍 GC16；波形装配异常改回退+日志（不再开机 abort）；时序早退防御与 strlcpy 修正。</li>
         </ul>
       </article>
     </div>
@@ -231,7 +235,7 @@
     </details>
     <details>
       <summary>怎么确认刷进去了、是这一版？</summary>
-      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.59</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
+      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.60</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
     </details>
     <details>
       <summary>刷到一半失败 / 断线了怎么办</summary>
@@ -261,7 +265,7 @@
 
 <footer>
   <div class="wrap">
-    <p>页屿 PageIsle · 1.15.59（基于官方 0.3.3-rc109）· 镜像 5,048,384 字节 · sha256 a36424ce…b4af6f</p>
+    <p>页屿 PageIsle · 1.15.60（基于官方 0.3.3-rc109）· 镜像 5,050,352 字节 · sha256 71a2263b…608cd8</p>
     <p>页面与固件由 mindreset 构建；esptool-js / esp-web-tools © Espressif Systems，Apache-2.0。</p>
     <p>代码仓库：<a href="https://github.com/aleksandrov-eink/pageisle" target="_blank" rel="noopener">github.com/aleksandrov-eink/pageisle</a> · 以仓库里的固件与校验值为准。</p>
   </div>
