@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>页屿 PageIsle · Metalio S31 串口日志（诊断）</title>
+<style>
+:root{color-scheme:light}
+body{margin:0;background:#f6f2e7;color:#2b2418;font:15px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:22px;margin:8px 0 6px}
+p.hint{color:#6b5f4b;font-size:13px;margin:6px 0}
+.note{background:#fbf8f0;border:1px solid #d8ccb2;border-radius:10px;padding:12px 14px;margin:12px 0}
+.note b{color:#8a2d1e}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button{font:inherit;padding:9px 16px;border-radius:9px;border:1px solid #b9a98a;background:#fff;color:#2b2418;cursor:pointer}
+button.primary{background:#2e5a45;border-color:#2e5a45;color:#f6f2e7}
+button:disabled{opacity:.45;cursor:not-allowed}
+#status{font-size:13px;color:#6b5f4b;margin-left:4px;align-self:center}
+#log{width:100%;height:62vh;min-height:320px;box-sizing:border-box;background:#14120e;color:#c9e8b8;border:1px solid #3a3328;border-radius:10px;padding:10px;font:12.5px/1.45 Consolas,"Cascadia Mono",monospace;white-space:pre-wrap;word-break:break-all;overflow:auto}
+label.chk{font-size:13px;color:#4b4231;display:inline-flex;align-items:center;gap:6px}
+footer{margin-top:16px;font-size:12px;color:#8a7d66}
+a{color:#2e5a45}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Metalio S31 · 串口日志（诊断）</h1>
+  <p class="hint">用浏览器直接读取设备控制台输出（USB Serial/JTAG，与刷机同一个 USB 口）。日志只在本机浏览器里显示，不会上传到任何服务器。</p>
+
+  <div class="note">
+    <p style="margin:0 0 6px"><b>使用步骤</b></p>
+    <ol style="margin:0;padding-left:20px;font-size:14px">
+      <li>用 USB 数据线把设备连到电脑；</li>
+      <li>关掉其它正在占用串口的页面/程序（例如本站的刷机页、串口助手）；</li>
+      <li>点「连接设备」→ 在弹窗里选择设备的串口；</li>
+      <li>在设备上复现问题（例如：设置 → 系统字体 → 点一个新字体），日志会实时出现；</li>
+      <li>点「复制全部」或「下载 .txt」，把日志发回给开发者。</li>
+    </ol>
+  </div>
+
+  <div class="bar">
+    <button id="connect" class="primary">连接设备</button>
+    <button id="disconnect" disabled>断开</button>
+    <button id="copy">复制全部</button>
+    <button id="download">下载 .txt</button>
+    <button id="clear">清空</button>
+    <label class="chk"><input type="checkbox" id="autoscroll" checked>自动滚到底部</label>
+    <span id="status">未连接</span>
+  </div>
+
+  <pre id="log" aria-live="polite"></pre>
+
+  <p class="hint">提示：固件日志里常见关键字：<code>TTF open failed</code>（字体文件打不开）、<code>build working font failed</code>（字体表装不进内存）、<code>stbtt_InitFont failed</code>（字体格式不支持）、<code>mapped/stream ... glyphs</code>（字体加载成功的统计）。</p>
+  <p class="hint">本工具需要电脑版 Chrome / Edge，并通过 https 打开本页（Web Serial 要求安全上下文）。</p>
+
+  <footer>
+    <p><a href="./">← 回到 Metalio S31 内测页</a></p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var logEl = document.getElementById('log');
+  var statusEl = document.getElementById('status');
+  var btnConnect = document.getElementById('connect');
+  var btnDisconnect = document.getElementById('disconnect');
+  var btnCopy = document.getElementById('copy');
+  var btnDownload = document.getElementById('download');
+  var btnClear = document.getElementById('clear');
+  var autoScroll = document.getElementById('autoscroll');
+
+  var port = null;
+  var reader = null;
+  var keepReading = false;
+  var decoder = new TextDecoder('utf-8', { fatal: false });
+  var MAX_CHARS = 1500000;
+
+  function setStatus(text) { statusEl.textContent = text; }
+  function supported() { return ('serial' in navigator) && window.isSecureContext; }
+
+  function append(text) {
+    if (!text) return;
+    logEl.textContent += text;
+    if (logEl.textContent.length > MAX_CHARS) {
+      logEl.textContent = logEl.textContent.slice(logEl.textContent.length - MAX_CHARS);
+    }
+    if (autoScroll.checked) logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  async function readLoop() {
+    while (keepReading && port && port.readable) {
+      try {
+        reader = port.readable.getReader();
+      } catch (e) {
+        append('\n[本地] 读取器建立失败：' + e + '\n');
+        break;
+      }
+      try {
+        for (;;) {
+          var result = await reader.read();
+          if (result.done) break;
+          if (result.value) append(decoder.decode(result.value, { stream: true }));
+        }
+      } catch (e) {
+        if (keepReading) append('\n[本地] 读取中断：' + e + '\n');
+      } finally {
+        try { reader.releaseLock(); } catch (e2) {}
+        reader = null;
+      }
+      if (!keepReading) break;
+    }
+    append('\n[本地] 已停止读取\n');
+    setStatus('已断开');
+    btnConnect.disabled = false;
+    btnDisconnect.disabled = true;
+  }
+
+  async function connect() {
+    if (!supported()) {
+      alert('当前浏览器不支持 Web Serial，或页面不是 https。\n请用电脑版 Chrome / Edge 并通过 https 打开本页。');
+      return;
+    }
+    if (port) return;
+    btnConnect.disabled = true;
+    setStatus('等待选择串口…');
+    try {
+      // 必须在点击事件里同步调用 requestPort，避免用户手势失效。
+      var p = await navigator.serial.requestPort();
+      port = p;
+      setStatus('正在打开串口…');
+      await port.open({ baudRate: 115200, dataBits: 8, stopBits: 1, parity: 'none', flowControl: 'none' });
+      keepReading = true;
+      append('\n[本地] 已连接。设备控制台日志（USB Serial/JTAG）如下：\n');
+      setStatus('已连接，等待设备输出…');
+      btnDisconnect.disabled = false;
+      readLoop();
+    } catch (e) {
+      port = null;
+      btnConnect.disabled = false;
+      btnDisconnect.disabled = true;
+      setStatus('未连接');
+      if (e && (e.name === 'NotFoundError' || String(e).indexOf('No port selected') >= 0)) {
+        append('\n[本地] 已取消串口选择。\n');
+      } else {
+        append('\n[本地] 连接失败：' + e + '\n请确认设备已插好、串口未被其它页面/程序占用。\n');
+      }
+    }
+  }
+
+  async function disconnect() {
+    keepReading = false;
+    setStatus('正在断开…');
+    try { if (reader) await reader.cancel(); } catch (e) {}
+    try { if (port) await port.close(); } catch (e2) {}
+    port = null;
+    btnConnect.disabled = false;
+    btnDisconnect.disabled = true;
+    setStatus('已断开');
+  }
+
+  btnConnect.addEventListener('click', connect);
+  btnDisconnect.addEventListener('click', disconnect);
+  btnClear.addEventListener('click', function () { logEl.textContent = ''; logEl.scrollTop = 0; });
+  btnCopy.addEventListener('click', function () {
+    var text = logEl.textContent || '';
+    if (!text) { setStatus('日志为空'); return; }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function () { setStatus('已复制 ' + text.length + ' 字符'); },
+        function () { setStatus('复制失败，请手动全选复制'); });
+    } else {
+      var range = document.createRange();
+      range.selectNodeContents(logEl);
+      var sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
+      setStatus('已选中，请按 Ctrl+C');
+    }
+  });
+  btnDownload.addEventListener('click', function () {
+    var text = logEl.textContent || '';
+    if (!text) { setStatus('日志为空'); return; }
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var a = document.createElement('a');
+    var d = new Date();
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    a.href = URL.createObjectURL(blob);
+    a.download = 'metalio-serial-' + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' +
+      pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()) + '.txt';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  });
+
+  if (!supported()) {
+    btnConnect.disabled = true;
+    setStatus('当前环境不支持 Web Serial（需要 Chrome/Edge + https）');
+  }
+})();
+</script>
+</body>
+</html>

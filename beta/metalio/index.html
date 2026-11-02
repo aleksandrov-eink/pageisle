@@ -217,6 +217,11 @@
     <p class="section-lead">本页是纯静态站点，可以整份放进 GitHub Pages：刷机流程与 Pico 内测页完全一致（<code>&lt;esp-web-install-button manifest="firmware/manifest.json"&gt;</code>），底层用开源 esptool-js 0.7.1（Apache-2.0，本仓库内已内置，不依赖任何 CDN）。页面本身不收集任何数据，串口通信只在你的浏览器与设备之间发生。</p>
     <p class="section-lead">固件基于上游 <b>kiikoread 0.3.3-rc109</b> 做应用层定制，分区表、引导程序、OTA 元数据布局与官方一致，未改动。固件按 Apache-2.0 发布；图标来自 Lucide（ISC）。刷机有风险，请自行确认版本与设备型号（Metalio 4.7 V1.5 / ESP32-S31 / 16 MB flash）。</p>
   </section>
+  <section id="diagnostics">
+    <h2>诊断工具</h2>
+    <p class="section-lead">设备控制台走 USB Serial/JTAG（与刷机用的是同一个 USB 口）。用下面的页面可以直接在浏览器里查看、复制设备串口日志，用于反馈字体加载失败、崩溃、显示异常等问题；日志只在本机浏览器内处理，不会上传。</p>
+    <p><a class="flash-btn" style="display:inline-block;text-decoration:none" href="serial-log.html">打开串口日志（诊断）</a></p>
+  </section>
 </main>
 
 <footer>
