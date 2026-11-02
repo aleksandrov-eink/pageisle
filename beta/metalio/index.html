@@ -98,11 +98,11 @@
 
       <h2 style="margin-top:26px">固件信息</h2>
       <table class="meta">
-        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.56）</td></tr>
-        <tr><th>版本号</th><td>1.15.56（基于官方 0.3.3-rc109）</td></tr>
-        <tr><th>应用镜像</th><td>5,047,424 字节</td></tr>
-        <tr><th>ota_0 余量</th><td>195,456 字节（3.7%）</td></tr>
-        <tr><th>sha256</th><td><code>d541b5de2a6e329aaeab43755b1a4630e01ec43e27393c72b51d7e0091f135df</code></td></tr>
+        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.57）</td></tr>
+        <tr><th>版本号</th><td>1.15.57（基于官方 0.3.3-rc109）</td></tr>
+        <tr><th>应用镜像</th><td>5,048,144 字节</td></tr>
+        <tr><th>ota_0 余量</th><td>194,736 字节（3.7%）</td></tr>
+        <tr><th>sha256</th><td><code>aa21d2f227ed6a3eb5455bc6fcd7141172db5e5fb604fdbd2c8ab48bc61960b4</code></td></tr>
         <tr><th>在线更新源</th><td>页屿自建 <code>metalio/update.json</code>（不再走官方源，官方包不会再覆盖本机固件）</td></tr>
         <tr><th>官方回退包</th><td><a href="firmware/official-rc109-original.bin">official-rc109-original.bin</a> · 5,004,960 字节 · sha256 <code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
       </table>
@@ -186,7 +186,8 @@
           <li>主页切换、系统子页与列表的波形/清理节奏按 Pico 同屏实现移植（普通档 40 次、快刷/系统页 12 次整屏清理）。</li>
           <li>Metalio 的扫描时序模块原先固定 20MHz 死参数；本版实装 Pico 自适应时序（行长/帧长/CKV/预填按档位解算）。</li>
           <li><b>面板时钟 A/B</b>：开机时按住音量键进调试页 →「面板时钟」20↔24MHz → 重启生效（默认 20，安全；24 每相驱动更接近 Pico）。</li>
-          <li>串口日志：<code>scan full 20 MHz … CKV …</code>、<code>reader turn waveform=pico-water41 phases=41</code>。</li>
+          <li><b>设置页滚动修复（1.15.57）</b>：列表滚动改 Pico 45 相单表差分，去掉上下双强度与每 8 次整区重写；滚动停止后整页 settle（含页头），修复「下部越滚越白、上部立刻变黑」。</li>
+          <li>串口日志：<code>scan full 20 MHz … CKV …</code>、<code>reader turn waveform=pico-water41 phases=41</code>、<code>settings scroll pico45 …</code>。</li>
         </ul>
       </article>
     </div>
@@ -229,7 +230,7 @@
     </details>
     <details>
       <summary>怎么确认刷进去了、是这一版？</summary>
-      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.56</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
+      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.57</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
     </details>
     <details>
       <summary>刷到一半失败 / 断线了怎么办</summary>
@@ -259,7 +260,7 @@
 
 <footer>
   <div class="wrap">
-    <p>页屿 PageIsle · 1.15.56（基于官方 0.3.3-rc109）· 镜像 5,047,424 字节 · sha256 d541b5de…f135df</p>
+    <p>页屿 PageIsle · 1.15.57（基于官方 0.3.3-rc109）· 镜像 5,048,144 字节 · sha256 aa21d2f2…1960b4</p>
     <p>页面与固件由 mindreset 构建；esptool-js / esp-web-tools © Espressif Systems，Apache-2.0。</p>
     <p>代码仓库：<a href="https://github.com/aleksandrov-eink/pageisle" target="_blank" rel="noopener">github.com/aleksandrov-eink/pageisle</a> · 以仓库里的固件与校验值为准。</p>
   </div>
