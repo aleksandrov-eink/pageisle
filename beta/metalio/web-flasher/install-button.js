@@ -177,10 +177,15 @@ class InstallSession {
       this.setStatus('正在连接并识别芯片…' + (mode === 'no_reset' ? '（下载模式，不再复位）' : '（自动复位）'));
       const chip = await this.loader.main(mode);
       this.log('检测到芯片: ' + chip);
-      if (chip !== 'ESP32-S31') {
-        throw new Error('检测到 ' + chip + '，这不是 Metalio S31；已停止，未写入任何数据。');
+      // ESPLoader.main() 返回的芯片描述可能带固件修订后缀，例如
+      // “ESP32-S31 (revision v0.0)”；不能拿完整字符串做等值比较，否则同一颗芯片会被误判。
+      const rawChip = String((this.loader && this.loader.chip && this.loader.chip.CHIP_NAME) || chip || '');
+      const chipName = rawChip.split(' (')[0].trim();
+      if (chipName !== 'ESP32-S31') {
+        throw new Error('检测到 ' + chip + '，这不是 ESP32-S31；已停止，未写入任何数据。');
       }
-      this.modal.querySelector('.device').textContent = '已连接：' + chip + '（Metalio S31）';
+      this.log('芯片型号确认: ' + chipName);
+      this.modal.querySelector('.device').textContent = '已连接：ESP32-S31（Metalio S31）';
       const manifestUrl = this.host.getAttribute('manifest') || 'firmware/manifest.json';
       const response = await fetch(manifestUrl, { cache: 'no-store' });
       if (!response.ok) throw new Error('读取安装清单失败（HTTP ' + response.status + '）');
