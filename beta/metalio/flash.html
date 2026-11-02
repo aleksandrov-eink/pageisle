@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metalio S31 浏览器一键升级 · 页屿 PageIsle</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .flasher-card { max-width: 820px; }
+  .flasher-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+  .flasher-actions button { border: 0; border-radius: 10px; padding: 10px 18px; font-size: 15px; cursor: pointer; }
+  #connect { background: #2e5a45; color: #f6f2e7; }
+  #flash { background: #8a5a2b; color: #fff8ec; }
+  #disconnect { background: #e6ddc8; color: #4a4133; }
+  .flasher-actions button:disabled { opacity: .45; cursor: not-allowed; }
+  #status { padding: 10px 12px; border-radius: 8px; background: #f3eee1; margin: 8px 0; }
+  #progress { width: 100%; height: 14px; }
+  #log { max-height: 220px; overflow: auto; background: #1f241f; color: #d8e6cf; padding: 10px;
+         border-radius: 8px; font-size: 12px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div style="background:#2e5a45;color:#f6f2e7;padding:10px 16px;font-size:14px;text-align:center">
+内测通道 · 选择设备： <a style="color:#e8dcc0" href="../">Pico（原设备）</a> ｜ <b>Metalio S31</b> ｜
+<a style="color:#e8dcc0" href="../../">回到正式版</a></div>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">页屿 <span>PageIsle</span> · Metalio S31 一键升级</div>
+    <nav><a href="./">返回 Metalio 内测页</a><a href="#help">操作说明</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <section style="padding-top:24px">
+    <div class="card flasher-card" style="border:1px solid #b9a98a">
+      <h1 style="margin-top:0">浏览器一键升级</h1>
+      <p class="hint">使用电脑版 <b>Chrome / Edge</b> 和 USB 数据线连接 Metalio S31。只写入
+        <b>应用分区 + OTA 选择区</b>，不会擦除书籍、设置或存储卡。刷入前请确认电量充足。</p>
+      <div class="flasher-actions">
+        <button id="connect" type="button">① 连接设备</button>
+        <button id="flash" type="button" disabled>② 开始升级</button>
+        <button id="disconnect" type="button" disabled>断开</button>
+      </div>
+      <div id="status">等待连接设备…</div>
+      <progress id="progress" value="0" max="100"></progress>
+      <p id="progress-label" class="hint">0%</p>
+      <pre id="log"></pre>
+      <p class="hint" style="margin-top:12px">连接失败/设备无响应时：断开 USB → 按住设备电源键（或 BOOT 键）→ 插线 →
+        进入下载模式后重新点「连接设备」。刷入失败不会导致设备变砖；可用本页重试，或用 TF 卡升级包回刷。</p>
+    </div>
+  </section>
+  <section id="help" style="padding-top:8px;padding-bottom:40px">
+    <div class="card">
+      <h2 style="margin-top:0">说明</h2>
+      <ul>
+        <li>本页写入的是 <b>官方 0.3.3-rc109 原版应用镜像</b>（与官方功能一致，仅用于验证刷机链路）；页屿阅读功能版后续会替换本页镜像。</li>
+        <li>写入内容：应用镜像到 <code>0x10000</code>，OTA 选择区到 <code>0xd000</code>；不改引导、分区表、NVS、书籍存储。</li>
+        <li>需要浏览器支持 Web Serial（桌面 Chrome/Edge；Firefox/Safari 不支持）。</li>
+        <li>升级完成后设备自动重启；若没有重启，请手动断电再开机。</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<script type="module" src="./flasher/flash-app.js"></script>
+</body>
+</html>
