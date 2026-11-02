@@ -58,6 +58,21 @@
         <span class="unsupported" slot="unsupported">当前浏览器不支持 Web Serial，请改用电脑版 Chrome 或 Edge（89 及以上）。</span>
         <span class="not-allowed" slot="not-allowed">页面必须通过 HTTPS 或 localhost 打开才能刷机。</span>
       </esp-web-install-button>
+<script>
+// 能力自检兜底：即使安装按钮模块加载失败，也不要把支持 Web Serial 的浏览器误报成“不支持”。
+(function () {
+  var ok = ('serial' in navigator) && window.isSecureContext;
+  var nodes = document.querySelectorAll('esp-web-install-button [slot="unsupported"], esp-web-install-button [slot="not-allowed"]');
+  if (ok) {
+    for (var i = 0; i < nodes.length; i++) { nodes[i].hidden = true; nodes[i].style.display = 'none'; }
+  } else {
+    var hasSerial = 'serial' in navigator;
+    var hint = '（检测：Web Serial ' + (hasSerial ? '可用' : '不可用') +
+      '，HTTPS/安全上下文：' + (window.isSecureContext ? '是' : '否') + '）';
+    for (var j = 0; j < nodes.length; j++) { nodes[j].textContent += hint; }
+  }
+})();
+</script>
 
       <p class="hint">刷入后设备会自动重启。若没有自动重启，长按电源键一次即可。请先关闭占用该串口的程序（如 <code>idf.py monitor</code>、串口助手）。</p>
       <ul class="req">

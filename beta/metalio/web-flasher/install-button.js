@@ -1,8 +1,8 @@
 // 页屿 PageIsle · 设备内测安装按钮（ESP32-S31 / Metalio S31）
 // 页面结构与 Pico 内测页完全一致：<esp-web-install-button manifest="firmware/manifest.json">；
 // 这里用 esptool-js 0.7.1（官方支持 ESP32-S31）实现同样的"点按钮 → 选串口 → 安装"流程。
-import { ESPLoader, Transport } from './esptool-js.js';
-
+// 不在这里静态 import 316 KB 的 esptool-js：静态 import 失败会让整个自定义元素加载失败，
+// 页面上的 slot 文案就会原样显示成“不支持”。真正刷机时再动态 import。
 const MODAL_ID = 'pageisle-install-dialog';
 let active = null;
 
@@ -69,9 +69,16 @@ class PageIsleInstallButton extends HTMLElement {
     const notAllowed = this.querySelector('[slot="not-allowed"]');
     const serial = 'serial' in navigator;
     const secure = window.isSecureContext;
-    if (activate) activate.hidden = !serial || !secure;
-    if (unsupported) unsupported.hidden = serial;
-    if (notAllowed) notAllowed.hidden = !serial || secure;
+    // style.css 把 .unsupported/.not-allowed 固定成 display:block，仅设置 hidden 属性会被覆盖，
+    // 所以这里同时写 inline display，确保支持 Web Serial 时不出现“不支持”提示。
+    const show = (node, visible) => {
+      if (!node) return;
+      node.hidden = !visible;
+      node.style.display = visible ? '' : 'none';
+    };
+    show(activate, serial && secure);
+    show(unsupported, !serial);
+    show(notAllowed, serial && !secure);
     if (!activate) return;
     activate.addEventListener('click', (event) => {
       event.preventDefault();
