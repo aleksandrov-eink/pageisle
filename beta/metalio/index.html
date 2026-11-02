@@ -32,10 +32,14 @@
         <tr><th>sha256</th><td><code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
         <tr><th>刷机方式</th><td><b>浏览器一键升级（USB）</b> 或 TF 卡本地升级（备用）</td></tr>
       </table>
-      <h2>浏览器一键升级（推荐）</h2>
-      <p>电脑 Chrome/Edge + USB 数据线连接设备，点下面的按钮进入一键升级页；只写应用分区和 OTA 选择区，
-        不会擦除书籍/设置。若浏览器无法连接设备，再用下方 TF 卡方式。</p>
-      <p><a class="flash-btn" style="display:inline-block;text-decoration:none;padding:10px 18px;border-radius:10px;background:#2e5a45;color:#f6f2e7" href="flash.html">开始浏览器一键升级</a></p>
+      <h2>浏览器一键升级（推荐，操作流程与 Pico 相同）</h2>
+      <p>电脑 Chrome/Edge + USB 数据线。点下面的按钮 → 选择设备 → 确认 → 自动刷入；只写应用分区和
+        OTA 选择区，<b>不擦除书籍、设置和存储卡</b>。刷入前请确认电量充足。</p>
+      <p><button id="oneclick" type="button" class="flash-btn"
+        style="display:inline-block;padding:12px 22px;border:0;border-radius:10px;background:#2e5a45;color:#f6f2e7;font-size:16px;cursor:pointer">
+        ⚡ 一键刷入 Metalio S31 固件</button></p>
+      <p class="hint">需要桌面版 Chrome/Edge（Web Serial）；若连接失败，按提示让设备进入下载模式，
+        或用下方 TF 卡方式。</p>
       <h2>TF 卡本地升级（备用）</h2>
       <h2>刷入步骤</h2>
       <ol>
@@ -67,6 +71,25 @@
       </ul>
     </div>
   </section>
+
+<dialog id="install-dialog" style="max-width:720px;width:92vw;border:1px solid #b9a98a;border-radius:14px;padding:0;background:#fbf8f0;color:#3f382c">
+  <div style="padding:18px 20px">
+    <h2 style="margin:0 0 8px">一键刷入 Metalio S31</h2>
+    <p class="hint" id="dlg-device" style="margin:4px 0">正在选择设备…</p>
+    <div id="dlg-status" style="padding:10px 12px;border-radius:8px;background:#f3eee1;margin:10px 0">请选择设备串口…</div>
+    <progress id="dlg-progress" value="0" max="100" style="width:100%;height:14px"></progress>
+    <p class="hint" id="dlg-progress-label" style="margin:4px 0">0%</p>
+    <pre id="dlg-log" style="max-height:180px;overflow:auto;background:#1f241f;color:#d8e6cf;padding:10px;border-radius:8px;font-size:12px"></pre>
+    <p class="hint">本操作只写应用分区与 OTA 选择区，不擦除书籍/设置；过程中不要断电、不要拔线。</p>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button id="dlg-cancel" type="button" style="padding:10px 16px;border:0;border-radius:8px;background:#e6ddc8;cursor:pointer">取消</button>
+      <button id="dlg-install" type="button" disabled style="padding:10px 16px;border:0;border-radius:8px;background:#8a5a2b;color:#fff8ec;cursor:pointer">开始刷入</button>
+      <button id="dlg-close" type="button" hidden style="padding:10px 16px;border:0;border-radius:8px;background:#2e5a45;color:#f6f2e7;cursor:pointer">完成</button>
+    </div>
+  </div>
+</dialog>
+<script type="module" src="./flasher/oneclick.js"></script>
+
 </main>
 </body>
 </html>
