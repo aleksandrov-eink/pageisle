@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metalio S31 内测页 · 页屿 PageIsle</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div style="background:#2e5a45;color:#f6f2e7;padding:10px 16px;font-size:14px;text-align:center">
+内测通道 · 选择设备： <a style="color:#e8dcc0" href="../">Pico（原设备）</a> ｜ <b>Metalio S31</b> ｜
+<a style="color:#e8dcc0" href="../../">回到正式版</a></div>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">页屿 <span>PageIsle</span> · Metalio S31 内测</div>
+    <nav><a href="#update">刷机</a><a href="#rollback">回退</a><a href="#notes">说明</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <section id="update" style="padding-top:24px">
+    <div class="card" style="border:1px solid #b9a98a">
+      <h1 style="margin-top:0">Metalio S31 · 刷机链路验证版</h1>
+      <p class="hint">本页当前提供的是 <b>官方 0.3.3-rc109 原版固件</b>（与官方功能完全一致），
+        用于先验证 Pico ↔ Metalio 的刷入、在线 OTA 与回退链路；**页屿自定义功能（阅读界面等）会在后续
+        内测版更新到同一个 Metalio 入口**，届时本页会替换为自定义镜像。</p>
+      <table>
+        <tr><th>设备</th><td>Metalio 4.7 V1.5（ESP32-S31）</td></tr>
+        <tr><th>版本</th><td>0.3.3-rc109（project Kiikoread_Metalio_S31）</td></tr>
+        <tr><th>镜像</th><td><a href="firmware/Metalio-S31-update.bin">Metalio-S31-update.bin</a>
+          · 5,004,960 字节</td></tr>
+        <tr><th>sha256</th><td><code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
+        <tr><th>刷机方式</th><td>TF 卡本地升级（ESP32-S31 暂不支持网页一键刷机）</td></tr>
+      </table>
+      <h2>刷入步骤</h2>
+      <ol>
+        <li>下载上面的 <b>Metalio-S31-update.bin</b>（不要改名、不要解压）；</li>
+        <li>复制到 TF 卡根目录（与书籍同一张卡即可）；</li>
+        <li>把卡插回设备，进入 <b>设置 → 升级和恢复 → 本地升级</b>（或按屏幕提示），确认后等待完成；</li>
+        <li>升级完成后设备重启，版本仍为官方 0.3.3-rc109；官方在线 OTA 检查也保持可用。</li>
+      </ol>
+      <p class="hint">⚠️ 本镜像是 app-only 更新包，只写应用分区；刷入前确保电量充足，升级过程中不要断电/拔卡。</p>
+    </div>
+  </section>
+  <section id="rollback" style="padding-top:8px">
+    <div class="card">
+      <h2 style="margin-top:0">回退 / 重刷</h2>
+      <p>保留这个 <code>Metalio-S31-update.bin</code>，任何时候都可以用同样的 TF 卡步骤重刷回官方 rc109；
+        也可以在设备「升级和恢复」里检查官方在线 OTA。</p>
+      <p class="hint">不要把 Pico 的 <code>Pico-update.bin</code> 刷到 Metalio 上（两台设备硬件/引导不同，会无法启动）；
+        切换设备时请回到内测通道选择对应型号。</p>
+    </div>
+  </section>
+  <section id="notes" style="padding-top:8px;padding-bottom:40px">
+    <div class="card">
+      <h2 style="margin-top:0">版本说明</h2>
+      <ul>
+        <li>本版功能与官方 0.3.3-rc109 完全一致，不含页屿自定义改动；目的是先验证刷机链路，做到"刷了能回"。</li>
+        <li>没有 Metalio 真机可测，本包为官方原版镜像，风险最低；自定义功能版会在后续内测中提供，并保留官方包用于回退。</li>
+        <li>在线 OTA：本包保留官方更新源，可正常检查官方新版本；页屿自定义版的在线更新源会在功能版中单独配置。</li>
+        <li>遇到无法启动：优先用本页的官方包重刷；仍不行则需要 USB 恢复（官方工具）。</li>
+      </ul>
+    </div>
+  </section>
+</main>
+</body>
+</html>
