@@ -23,6 +23,9 @@ function styleOnce() {
     #${MODAL_ID} .cancel{background:#e6ddc8}
     #${MODAL_ID} .install{background:#8a5a2b;color:#fff8ec}
     #${MODAL_ID} .close{background:#2e5a45;color:#f6f2e7}
+    #${MODAL_ID} .retry{background:#8a5a2b;color:#fff8ec}
+    #${MODAL_ID} .copy{background:#e6ddc8}
+    #${MODAL_ID} .noreset-label{display:flex;align-items:center;gap:8px;font-size:13px;color:#6a5f4c;margin:8px 0}
     #${MODAL_ID} button:disabled{opacity:.45;cursor:not-allowed}
   `;
   document.head.appendChild(style);
@@ -42,7 +45,10 @@ function createModal() {
     <p class="pct" style="font-size:12px;color:#6a5f4c;margin:4px 0">0%</p>
     <pre class="log"></pre>
     <p style="font-size:12px;color:#6a5f4c">本操作只写入应用分区、引导、分区表与 OTA 选择区，不擦除书籍、设置和存储卡；过程中不要断电。</p>
+    <label class="noreset-label"><input type="checkbox" class="noreset"> 设备已进入下载模式（不复位；自动复位失败时勾选后重试）</label>
     <div class="row">
+      <button type="button" class="copy">复制日志</button>
+      <button type="button" class="retry" hidden>重试连接</button>
       <button type="button" class="cancel">取消</button>
       <button type="button" class="install" disabled>开始安装</button>
       <button type="button" class="close" hidden>完成</button>
@@ -59,6 +65,12 @@ function createModal() {
   });
   const install = root.querySelector('.install');
   install.addEventListener('click', () => { if (active) active.install(); });
+  root.querySelector('.retry').addEventListener('click', () => { if (active) active.retry(); });
+  root.querySelector('.copy').addEventListener('click', () => {
+    const box = root.querySelector('.log');
+    const text = box ? box.textContent : '';
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+  });
   return root;
 }
 
@@ -109,6 +121,7 @@ class InstallSession {
     this.modal.querySelector('.install').disabled = true;
     this.modal.querySelector('.close').hidden = true;
     this.modal.querySelector('.cancel').hidden = false;
+    this.modal.querySelector('.retry').hidden = true;
   }
   setStatus(text, kind) {
     const node = this.modal.querySelector('.status');
@@ -137,7 +150,9 @@ class InstallSession {
     try {
       this.port = await portPromise;
     } catch (error) {
-      this.setStatus('未选择串口：' + ((error && error.message) || error), 'error');
+      this.setStatus('未选择串口：' + ((error && error.message) || error) + '。可点「重试连接」重新选择。', 'error');
+      this.log('串口选择取消/失败: ' + error);
+      this.showRetry();
       return;
     }
     this.setStatus('已选择串口，正在加载刷机组件…');
@@ -146,6 +161,7 @@ class InstallSession {
       module = await import('./esptool-js.js');
     } catch (error) {
       this.setStatus('刷机组件加载失败：' + ((error && error.message) || error) + '，请刷新页面重试。', 'error');
+      this.log('刷机组件加载失败: ' + error);
       return;
     }
     try {
@@ -156,8 +172,10 @@ class InstallSession {
         romBaudrate: 115200,
         terminal: { clean: () => {}, writeLine: (line) => this.log(line), write: (line) => this.log(line) },
       });
-      this.setStatus('正在连接并识别芯片…');
-      const chip = await this.loader.main();
+      const noReset = this.modal.querySelector('.noreset');
+      const mode = noReset && noReset.checked ? 'no_reset' : 'default_reset';
+      this.setStatus('正在连接并识别芯片…' + (mode === 'no_reset' ? '（下载模式，不再复位）' : '（自动复位）'));
+      const chip = await this.loader.main(mode);
       this.log('检测到芯片: ' + chip);
       if (chip !== 'ESP32-S31') {
         throw new Error('检测到 ' + chip + '，这不是 Metalio S31；已停止，未写入任何数据。');
@@ -182,9 +200,12 @@ class InstallSession {
       this.setStatus('设备已就绪，点「开始安装」写入固件。', 'ok');
     } catch (error) {
       this.setStatus('连接失败：' + ((error && error.message) || error) +
-        '。若设备没有响应：断开 USB，按住电源键/BOOT 组合再插线，然后重试。', 'error');
+        '。可先让设备进入下载模式（断开 USB → 按住电源/BOOT → 插线 → 松手），勾选下方「设备已进入下载模式」' +
+        '后点「重试连接」；也可换一根能传数据的 USB 线。', 'error');
       this.log('连接失败: ' + error);
-      await this.abort();
+      if (error && error.stack) this.log(String(error.stack));
+      await this.disconnectOnly();
+      this.showRetry();
     }
   }
   async install() {
@@ -216,13 +237,31 @@ class InstallSession {
       installButton.hidden = true;
       await this.abort(false);
     } catch (error) {
-      this.setStatus('升级失败：' + ((error && error.message) || error) + '。可重试，或用 TF 卡升级包回刷。', 'error');
+      this.setStatus('升级失败：' + ((error && error.message) || error) + '。可点「重试连接」重新连接后再试，或用 TF 卡升级包回刷。', 'error');
       this.log('升级失败: ' + error);
-      installButton.disabled = false;
+      if (error && error.stack) this.log(String(error.stack));
+      installButton.disabled = true;
+      this.showRetry();
     } finally {
       this.busy = false;
       active = null;
     }
+  }
+  showRetry() {
+    this.modal.querySelector('.retry').hidden = false;
+  }
+  async disconnectOnly() {
+    try { if (this.transport) await this.transport.disconnect(); } catch (ignored) {}
+    this.transport = null;
+    this.loader = null;
+  }
+  async retry() {
+    if (this.busy) return;
+    this.modal.querySelector('.retry').hidden = true;
+    this.modal.querySelector('.install').disabled = true;
+    this.setStatus('重新连接…');
+    await this.disconnectOnly();
+    await this.start();
   }
   async abort(close = true) {
     try { if (this.transport) await this.transport.disconnect(); } catch (ignored) {}
