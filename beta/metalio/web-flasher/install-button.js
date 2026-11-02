@@ -135,6 +135,7 @@ class InstallSession {
   }
   async start() {
     this.modal.classList.add('open');
+    this.log('刷机组件 v2026-11-02c（ESP32-S31，支持带 revision 后缀的芯片描述）');
     if (!('serial' in navigator)) {
       this.setStatus('当前浏览器不支持 Web Serial：请用电脑版 Chrome/Edge，并通过 https 打开本页。', 'error');
       return;
@@ -179,12 +180,20 @@ class InstallSession {
       this.log('检测到芯片: ' + chip);
       // ESPLoader.main() 返回的芯片描述可能带固件修订后缀，例如
       // “ESP32-S31 (revision v0.0)”；不能拿完整字符串做等值比较，否则同一颗芯片会被误判。
+      // 放宽：esptool-js 可能返回 “ESP32-S31 (revision v0.0)” 或其它带后缀/空白的描述。
+      // 只要文本里出现 ESP32-S31 就继续；明确是别的芯片族才拒绝；无法识别时给出警告但继续。
       const rawChip = String((this.loader && this.loader.chip && this.loader.chip.CHIP_NAME) || chip || '');
-      const chipName = rawChip.split(' (')[0].trim();
-      if (chipName !== 'ESP32-S31') {
-        throw new Error('检测到 ' + chip + '，这不是 ESP32-S31；已停止，未写入任何数据。');
+      const chipText = (rawChip + ' ' + String(chip || '')).toUpperCase();
+      const isS31 = chipText.indexOf('ESP32-S31') >= 0 || chipText.indexOf('ESP32S31') >= 0;
+      const otherFamily = /ESP32-S3[^1]|ESP32-S2|ESP8266|ESP32-C|ESP32-H|ESP32-P/.test(chipText);
+      if (!isS31) {
+        if (otherFamily) {
+          throw new Error('检测到 ' + chip + '，这是其它芯片系列；已停止，未写入任何数据。');
+        }
+        this.log('警告：芯片描述未包含 ESP32-S31（' + chip + '），按 Metalio S31 继续；请确认设备型号。');
+      } else {
+        this.log('芯片型号确认: ESP32-S31');
       }
-      this.log('芯片型号确认: ' + chipName);
       this.modal.querySelector('.device').textContent = '已连接：ESP32-S31（Metalio S31）';
       const manifestUrl = this.host.getAttribute('manifest') || 'firmware/manifest.json';
       const response = await fetch(manifestUrl, { cache: 'no-store' });
