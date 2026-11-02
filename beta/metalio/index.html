@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>页屿 PageIsle · 刷机与功能介绍</title>
-<meta name="description" content="页屿 PageIsle · Metalio S31 自定义固件：浏览器一键刷机（USB 有线），在官方 kiikoread 0.3.3-rc109 之上新增 Markdown 书源与阅读页划线/高亮，可回退官方原包。">
+<meta name="description" content="页屿 PageIsle · Metalio S31 自定义固件：浏览器一键刷机（USB 有线），在官方 kiikoread 0.3.3-rc109 之上新增 Markdown 书源、阅读页划线/高亮、同屏同步的防泛黑清残影与字体恢复保护修复，可回退官方原包。">
 <meta name="theme-color" content="#f6f2e7">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
@@ -30,10 +30,10 @@
   <section class="hero" id="top">
     <p class="eyebrow">E-INK READER · METALIO 4.7 · ESP32-S31</p>
     <h1>页屿 <em>PageIsle</em> · Metalio S31</h1>
-    <p class="lead">在官方 kiikoread 0.3.3-rc109 之上做的应用层自定义固件：新增 <b>Markdown 书源与排版</b>、<b>阅读页字级划线/高亮</b>；
-      分区表、引导程序与 OTA 布局与官方一致，可浏览器一键刷入，也可随时刷回官方原包。用一根 USB 线，在浏览器里直接刷入。</p>
+    <p class="lead">在官方 kiikoread 0.3.3-rc109 之上做的应用层自定义固件：新增 <b>Markdown 书源与排版</b>、<b>阅读页字级划线/高亮</b>、
+      <b>同屏同步的防泛黑/清残影策略</b>；分区表、引导程序与 OTA 布局与官方一致，可浏览器一键刷入，也可随时刷回官方原包。用一根 USB 线，在浏览器里直接刷入。</p>
     <ul class="chips">
-      <li>Markdown 阅读</li><li>字级划线/高亮</li><li>官方 rc109 基线</li><li>自建在线 OTA</li>
+      <li>Markdown 阅读</li><li>字级划线/高亮</li><li>防泛黑 / 清残影</li><li>官方 rc109 基线</li><li>自建在线 OTA</li>
       <li>TXT / EPUB</li><li>Wi-Fi 传书</li><li>16 MB flash</li><li>可回退官方包</li>
     </ul>
   </section>
@@ -98,11 +98,11 @@
 
       <h2 style="margin-top:26px">固件信息</h2>
       <table class="meta">
-        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.54）</td></tr>
-        <tr><th>版本号</th><td>1.15.54（基于官方 0.3.3-rc109）</td></tr>
-        <tr><th>应用镜像</th><td>5,040,752 字节</td></tr>
-        <tr><th>ota_0 余量</th><td>202,128 字节（3.9%）</td></tr>
-        <tr><th>sha256</th><td><code>88cb9477362c586e85f0ae8cea277e998c148d776c454afbd4925709f0947faa</code></td></tr>
+        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.55）</td></tr>
+        <tr><th>版本号</th><td>1.15.55（基于官方 0.3.3-rc109）</td></tr>
+        <tr><th>应用镜像</th><td>5,044,304 字节</td></tr>
+        <tr><th>ota_0 余量</th><td>198,576 字节（3.8%）</td></tr>
+        <tr><th>sha256</th><td><code>f21c7bd44cf207d0db20b3e83ee93cb75212d8690c847d01ed748527a59381dc</code></td></tr>
         <tr><th>在线更新源</th><td>页屿自建 <code>metalio/update.json</code>（不再走官方源，官方包不会再覆盖本机固件）</td></tr>
         <tr><th>官方回退包</th><td><a href="firmware/official-rc109-original.bin">official-rc109-original.bin</a> · 5,004,960 字节 · sha256 <code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
       </table>
@@ -121,10 +121,11 @@
 
   <section id="features">
     <h2>功能介绍</h2>
-    <p class="section-lead">本固件 = 官方 kiikoread 0.3.3-rc109 + <b>三项页屿能力</b>：Markdown 书源、阅读页字级划线/高亮、
-      阅读背景图自动去白。显示算法、板级/PMU、睡眠、分区与 OTA 布局一律沿用官方母版，不叠加 Pico 那批显示/内存改动，以降低风险。</p>
+    <p class="section-lead">本固件 = 官方 kiikoread 0.3.3-rc109 + <b>五项页屿能力</b>：Markdown 书源、阅读页字级划线/高亮、
+      阅读背景图自动去白，以及 1.15.55 新增的「同屏同步防泛黑/清残影」与「异常恢复模式不再锁死字体」。
+      面板驱动、波形表、PIE 像素与 S31 时序仍沿用官方母版；只同步清残影/刷新策略，不整体替换显示驱动。</p>
 
-    <h3 class="feat-group"><span>本次新增</span> 三项能力</h3>
+    <h3 class="feat-group"><span>本次新增</span> 五项能力</h3>
     <div class="cards">
       <article class="promo-card">
         <div class="promo-no">01</div>
@@ -154,6 +155,27 @@
           <li>选作阅读背景的图片自动做去白处理：纯白像素直接跳过绘制，白底与页面白一致。</li>
           <li>正文墨色压在背景图上更清楚，不再出现一块灰白底衬托着黑字。</li>
           <li>不影响图片内容区与插图显示；换背景图即时生效。</li>
+        </ul>
+      </article>
+      <article class="promo-card">
+        <div class="promo-no">04</div>
+        <h3>防泛黑 / 清残影（同屏同步）</h3>
+        <p class="promo-sub">静置白推 · 低频 GC16 兜底 · 阅读页数或 10 分钟触发</p>
+        <ul class="promo-list">
+          <li>静置「防褪色」改为只对纯白底做 8 帧白推（约 96ms），不再每 5 分钟整屏 GC16 闪一次。</li>
+          <li>新增显示层低频真 GC16 兜底（页级输出 30 次 / 10 分钟），顽固黑残影仍会被整屏清理。</li>
+          <li>阅读「自动全刷」在页数之外增加 10 分钟 stale 触发；慢读、久停也会按时清残影。</li>
+          <li>策略同步自 Pico 1.15.53（同一块屏幕）；面板驱动/波形表/PIE/S31 时序仍为官方。</li>
+        </ul>
+      </article>
+      <article class="promo-card">
+        <div class="promo-no">05</div>
+        <h3>异常恢复模式不再锁死字体</h3>
+        <p class="promo-sub">偶发异常启动后，仍可手动切换系统 / 阅读字体</p>
+        <ul class="promo-list">
+          <li>固件检测到上次异常启动时会进入保护模式，原逻辑会把所有字体强制回内建（重启后恢复）。</li>
+          <li>本版允许在保护模式下手动选择系统/阅读字体（仅本次开机生效），加载失败仍回退内建并给提示。</li>
+          <li>保护模式原因可在串口日志 / 设置诊断中看到，便于反馈；坏字体导致的崩溃保护仍然保留。</li>
         </ul>
       </article>
     </div>
@@ -196,7 +218,7 @@
     </details>
     <details>
       <summary>怎么确认刷进去了、是这一版？</summary>
-      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.54</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
+      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.55</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
     </details>
     <details>
       <summary>刷到一半失败 / 断线了怎么办</summary>
@@ -226,7 +248,7 @@
 
 <footer>
   <div class="wrap">
-    <p>页屿 PageIsle · 1.15.54（基于官方 0.3.3-rc109）· 镜像 5,040,752 字节 · sha256 88cb9477…947faa</p>
+    <p>页屿 PageIsle · 1.15.55（基于官方 0.3.3-rc109）· 镜像 5,044,304 字节 · sha256 f21c7bd4…9381dc</p>
     <p>页面与固件由 mindreset 构建；esptool-js / esp-web-tools © Espressif Systems，Apache-2.0。</p>
     <p>代码仓库：<a href="https://github.com/aleksandrov-eink/pageisle" target="_blank" rel="noopener">github.com/aleksandrov-eink/pageisle</a> · 以仓库里的固件与校验值为准。</p>
   </div>
