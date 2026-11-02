@@ -1,0 +1,28 @@
+{
+  "name": "页屿 PageIsle 内测版 · Metalio S31（官方 0.3.3-rc109 验证包）",
+  "version": "0.3.3-rc109",
+  "new_install_prompt_erase": false,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S31",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 8192
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768
+        },
+        {
+          "path": "ota_data_initial.bin",
+          "offset": 53248
+        },
+        {
+          "path": "firmware.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}
