@@ -1,12 +1,12 @@
 {
   "schema": 1,
-  "version": "1.15.64",
+  "version": "1.15.65",
   "project": "Kiikoread_Metalio_S31",
   "board": "Metalio-EINK4-Plus-S31",
   "layout": "metalio-s31-dual-5m-v1",
   "minimum_base_version": "0.3.3-rc109",
   "url": "https://aleksandrov-eink.github.io/pageisle/metalio/Metalio-S31-update.bin",
-  "size": 5052528,
-  "sha256": "9accc5a1bc51b67c4aaf7b9caa616ab3d59370af8ad7854e3c2c3078d42f485b",
-  "notes": "页屿 PageIsle 自定义 1.15.64（Metalio S31，基于官方 0.3.3-rc109）：阅读页划线/高亮、Markdown 书源与排版、阅读背景图自动去白；显示算法、板级/PMU、睡眠与分区/OTA 布局沿用官方母版。分区表、引导程序与 OTA 布局与官方一致，可回退官方原包。OTA 余量 190352 字节（3.6%）。"
+  "size": 5053328,
+  "sha256": "50fa2abba39612ffdc0ca2f0fc433c574a3acbfd704d2f550c8481885dab32ea",
+  "notes": "页屿 PageIsle 自定义 1.15.65（Metalio S31，基于官方 0.3.3-rc109）：阅读页划线/高亮、Markdown 书源与排版、阅读背景图自动去白；显示算法、板级/PMU、睡眠与分区/OTA 布局沿用官方母版。分区表、引导程序与 OTA 布局与官方一致，可回退官方原包。OTA 余量 189552 字节（3.6%）。"
 }
