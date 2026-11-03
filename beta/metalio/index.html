@@ -93,16 +93,16 @@
         <li><strong>连接设备</strong>：用能传数据的 USB 线接到电脑，设备保持开机即可（不用按 BOOT）。</li>
         <li><strong>点按钮选串口</strong>：选设备对应的那一项（常见名字带 <code>USB JTAG</code> 或 <code>USB Serial</code>）；
           之后出现的 <b>Erase device</b> 确认框里<b>不要勾选</b>，直接点 <b>Next</b>。</li>
-        <li><strong>等进度走完</strong>：写入约 4.8 MB；完成后设备重启，进入锁屏界面。之后可在「设置 → 升级和恢复 → 更新说明」里看到本版条目。</li>
+        <li><strong>等进度走完</strong>：写入约 4.9 MB；完成后设备重启，进入锁屏界面。之后可在「设置 → 升级和恢复 → 更新说明」里看到本版条目。</li>
       </ol>
 
       <h2 style="margin-top:26px">固件信息</h2>
       <table class="meta">
-        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.60）</td></tr>
-        <tr><th>版本号</th><td>1.15.60（基于官方 0.3.3-rc109）</td></tr>
-        <tr><th>应用镜像</th><td>5,050,352 字节</td></tr>
-        <tr><th>ota_0 余量</th><td>192,528 字节（3.7%）</td></tr>
-        <tr><th>sha256</th><td><code>71a2263bab5c9f151d43bae2a4fd3744308d9da7a2639efa4217026624608cd8</code></td></tr>
+        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.61）</td></tr>
+        <tr><th>版本号</th><td>1.15.61（基于官方 0.3.3-rc109）</td></tr>
+        <tr><th>应用镜像</th><td>5,053,344 字节</td></tr>
+        <tr><th>ota_0 余量</th><td>189,536 字节（3.6%）</td></tr>
+        <tr><th>sha256</th><td><code>4f8fb9713a171412919c67c73d8b2c3acd4ee6b7cfaa043710c5084ed96c1665</code></td></tr>
         <tr><th>在线更新源</th><td>页屿自建 <code>metalio/update.json</code>（不再走官方源，官方包不会再覆盖本机固件）</td></tr>
         <tr><th>官方回退包</th><td><a href="firmware/official-rc109-original.bin">official-rc109-original.bin</a> · 5,004,960 字节 · sha256 <code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
       </table>
@@ -193,6 +193,8 @@
           <li><b>Pico 清残影算法 + 四档翻页（1.15.59）</b>：轻活动清理（页计数+时间+活动判定）、GC16/白推升级与归零、白修复；阅读翻页四档：普通·快刷 / 普通·高清 / 水波纹·快刷 / 水波纹·高清（旧设置自动迁移，HD 失败自动回退）。</li>
           <li><b>波形装配（1.15.59）</b>：默认按 Pico 装配（去掉额外白/黑过驱补帧），一条编译宏可切回官方；串口开机打印装配指纹。</li>
           <li><b>1.15.60 交互/稳定</b>：设置页滚动停手 settle 默认关闭（消除 0.64 秒同步刷新导致的慢/误触）、触摸采样延迟诊断；清残影整屏 GC16 改空闲执行；字体重试去轮询+30 秒退避；屏幕修复 2 遍 GC16；波形装配异常改回退+日志（不再开机 abort）；时序早退防御与 strlcpy 修正。</li>
+        
+          <li><b>1.15.61 交互修复</b>：①阅读页下翻/向下滑无效 → 移植 Pico 中心语义（单击仍翻页、双击全屏）+ 扩大翻页点击区 + 滑动起终点都认；②设置页滑动跟手（24 相快速表/节流/停手质量刷新）与误触修复（页面级 TAP 上限：列表 350ms、阅读页 500ms 无死区）；③清残影"文字发白、全刷才恢复"→ 清理改从白基准重写，清理后 60 秒内抑制白推。</li>
         </ul>
       </article>
     </div>
@@ -235,7 +237,7 @@
     </details>
     <details>
       <summary>怎么确认刷进去了、是这一版？</summary>
-      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.60</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
+      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.61</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
     </details>
     <details>
       <summary>刷到一半失败 / 断线了怎么办</summary>
@@ -265,7 +267,7 @@
 
 <footer>
   <div class="wrap">
-    <p>页屿 PageIsle · 1.15.60（基于官方 0.3.3-rc109）· 镜像 5,050,352 字节 · sha256 71a2263b…608cd8</p>
+    <p>页屿 PageIsle · 1.15.61（基于官方 0.3.3-rc109）· 镜像 5,053,344 字节 · sha256 4f8fb971…6c1665</p>
     <p>页面与固件由 mindreset 构建；esptool-js / esp-web-tools © Espressif Systems，Apache-2.0。</p>
     <p>代码仓库：<a href="https://github.com/aleksandrov-eink/pageisle" target="_blank" rel="noopener">github.com/aleksandrov-eink/pageisle</a> · 以仓库里的固件与校验值为准。</p>
   </div>
