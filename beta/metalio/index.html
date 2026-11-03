@@ -93,16 +93,16 @@
         <li><strong>连接设备</strong>：用能传数据的 USB 线接到电脑，设备保持开机即可（不用按 BOOT）。</li>
         <li><strong>点按钮选串口</strong>：选设备对应的那一项（常见名字带 <code>USB JTAG</code> 或 <code>USB Serial</code>）；
           之后出现的 <b>Erase device</b> 确认框里<b>不要勾选</b>，直接点 <b>Next</b>。</li>
-        <li><strong>等进度走完</strong>：写入约 4.9 MB；完成后设备重启，进入锁屏界面。之后可在「设置 → 升级和恢复 → 更新说明」里看到本版条目。</li>
+        <li><strong>等进度走完</strong>：写入约 4.8 MB；完成后设备重启，进入锁屏界面。之后可在「设置 → 升级和恢复 → 更新说明」里看到本版条目。</li>
       </ol>
 
       <h2 style="margin-top:26px">固件信息</h2>
       <table class="meta">
-        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.62）</td></tr>
-        <tr><th>版本号</th><td>1.15.62（基于官方 0.3.3-rc109）</td></tr>
-        <tr><th>应用镜像</th><td>5,059,936 字节</td></tr>
-        <tr><th>ota_0 余量</th><td>182,944 字节（3.5%）</td></tr>
-        <tr><th>sha256</th><td><code>4ad22e611d867dd4f1890ce9cc16ca4007a98e974c5d741039b9be407144272b</code></td></tr>
+        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.63）</td></tr>
+        <tr><th>版本号</th><td>1.15.63（基于官方 0.3.3-rc109）</td></tr>
+        <tr><th>应用镜像</th><td>5,050,720 字节</td></tr>
+        <tr><th>ota_0 余量</th><td>192,160 字节（3.7%）</td></tr>
+        <tr><th>sha256</th><td><code>b0780fc83f96dd77c0554a495fb416faca0a8ff08c3c570c6b7e1513d489b075</code></td></tr>
         <tr><th>在线更新源</th><td>页屿自建 <code>metalio/update.json</code>（不再走官方源，官方包不会再覆盖本机固件）</td></tr>
         <tr><th>官方回退包</th><td><a href="firmware/official-rc109-original.bin">official-rc109-original.bin</a> · 5,004,960 字节 · sha256 <code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
       </table>
@@ -197,7 +197,8 @@
           <li><b>1.15.61 交互修复</b>：①阅读页下翻/向下滑无效 → 移植 Pico 中心语义（单击仍翻页、双击全屏）+ 扩大翻页点击区 + 滑动起终点都认；②设置页滑动跟手（24 相快速表/节流/停手质量刷新）与误触修复（页面级 TAP 上限：列表 350ms、阅读页 500ms 无死区）；③清残影"文字发白、全刷才恢复"→ 清理改从白基准重写，清理后 60 秒内抑制白推。</li>
         
           <li><b>1.15.62 字体变淡修复</b>：翻页派生表相比首屏 GC16 少 4 个压黑相（13 vs 17，约减少四分之一）；按 `READER_TURN_BLACK_EXTRA=4` 补齐，等值保持、不闪屏，单页约 +40~50ms。</li>
-          <li><b>1.15.62 基于 S31 的流畅性（第一批）</b>：书架分段计时、进书架骨架屏+计数进度、进度/收藏批量读（一次 NVS 打开）、相邻页封面预取、空闲逐张预热；目标冷进书架可交互更快、封面出现更快。</li></ul>
+          <li>1.15.62 的 S31 书架优化批（骨架屏/批量进度/预取/预热）因真机刷新变慢已回退为默认关闭，仅保留分段计时日志；后续按 Pico 移植路径重做并 A/B 验证。</li>
+          <li><b>1.15.63 回归 Pico 观感与刷新节奏</b>：设置页恢复 Pico 原实现（灰阶 AA 渲染 + 单次 GL16 滚动差分，去掉自创快速表/settle/黑度补丁默认）；书架与首页刷新回到 1.15.61（自创骨架/分拍/预取/预热默认关）；阅读翻页黑度补丁默认回 Pico 原表（仅 A/B）；清残影白基准（有真机依据）保留并标注非 Pico。</li></ul>
       </article>
     </div>
 
@@ -239,7 +240,7 @@
     </details>
     <details>
       <summary>怎么确认刷进去了、是这一版？</summary>
-      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.62</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
+      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.63</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
     </details>
     <details>
       <summary>刷到一半失败 / 断线了怎么办</summary>
@@ -269,7 +270,7 @@
 
 <footer>
   <div class="wrap">
-    <p>页屿 PageIsle · 1.15.62（基于官方 0.3.3-rc109）· 镜像 5,059,936 字节 · sha256 4ad22e61…44272b</p>
+    <p>页屿 PageIsle · 1.15.63（基于官方 0.3.3-rc109）· 镜像 5,050,720 字节 · sha256 b0780fc8…89b075</p>
     <p>页面与固件由 mindreset 构建；esptool-js / esp-web-tools © Espressif Systems，Apache-2.0。</p>
     <p>代码仓库：<a href="https://github.com/aleksandrov-eink/pageisle" target="_blank" rel="noopener">github.com/aleksandrov-eink/pageisle</a> · 以仓库里的固件与校验值为准。</p>
   </div>
