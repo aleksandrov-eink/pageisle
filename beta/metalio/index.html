@@ -98,11 +98,11 @@
 
       <h2 style="margin-top:26px">固件信息</h2>
       <table class="meta">
-        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.65）</td></tr>
-        <tr><th>版本号</th><td>1.15.65（基于官方 0.3.3-rc109）</td></tr>
-        <tr><th>应用镜像</th><td>5,053,328 字节</td></tr>
-        <tr><th>ota_0 余量</th><td>189,552 字节（3.6%）</td></tr>
-        <tr><th>sha256</th><td><code>50fa2abba39612ffdc0ca2f0fc433c574a3acbfd704d2f550c8481885dab32ea</code></td></tr>
+        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.66）</td></tr>
+        <tr><th>版本号</th><td>1.15.66（基于官方 0.3.3-rc109）</td></tr>
+        <tr><th>应用镜像</th><td>5,055,344 字节</td></tr>
+        <tr><th>ota_0 余量</th><td>187,536 字节（3.6%）</td></tr>
+        <tr><th>sha256</th><td><code>2ecabe62081077c91af6b8e5b408880d0a541a481daddf7d1331fbed6ca79c6e</code></td></tr>
         <tr><th>在线更新源</th><td>页屿自建 <code>metalio/update.json</code>（不再走官方源，官方包不会再覆盖本机固件）</td></tr>
         <tr><th>官方回退包</th><td><a href="firmware/official-rc109-original.bin">official-rc109-original.bin</a> · 5,004,960 字节 · sha256 <code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
       </table>
@@ -200,7 +200,8 @@
           <li>1.15.62 的 S31 书架优化批（骨架屏/批量进度/预取/预热）因真机刷新变慢已回退为默认关闭，仅保留分段计时日志；后续按 Pico 移植路径重做并 A/B 验证。</li>
           <li><b>1.15.63 回归 Pico 观感与刷新节奏</b>：设置页恢复 Pico 原实现（灰阶 AA 渲染 + 单次 GL16 滚动差分，去掉自创快速表/settle/黑度补丁默认）；书架与首页刷新回到 1.15.61（自创骨架/分拍/预取/预热默认关）；阅读翻页黑度补丁默认回 Pico 原表（仅 A/B）；清残影白基准（有真机依据）保留并标注非 Pico。</li>
           <li><b>1.15.64 开始转移 Pico 功能（默认行为不变）</b>：①翻转屏幕阅读照搬 Pico 自适应方向——阅读设置新增「自适应阅读方向」开关（默认关），350ms 采样+3 次去抖+轻点校准，支持竖屏两向/手动倒置调试，触摸坐标与手势方向同步映射，锁屏/关机前自动回竖屏；②反色模式底层照搬 Pico epdiy 反色（LUT 镜像/深色 hold/from_white 黑基准），默认关、未接 UI；③书架/封面照搬 Pico 预取/预热/空帧守卫，默认关 A/B。</li>
-          <li><b>1.15.65 翻转阅读修复</b>：补齐 Pico 的 SC7A20H 加速度计上电（初始化后轴关闭会读到近零重力、校准永远失败）；打开「自适应阅读方向」或重新开书时立即自动校准（非 Pico 便利补丁）；新增 <code>[orient]</code> 诊断日志（校准成功/跳过/方向切换/传感器未就绪）。自适应默认仍关。</li></ul>
+          <li><b>1.15.65 翻转阅读修复</b>：补齐 Pico 的 SC7A20H 加速度计上电（初始化后轴关闭会读到近零重力、校准永远失败）；打开「自适应阅读方向」或重新开书时立即自动校准（非 Pico 便利补丁）；新增 <code>[orient]</code> 诊断日志（校准成功/跳过/方向切换/传感器未就绪）。自适应默认仍关。</li>
+          <li><b>1.15.66 书架点书修复 + 翻转诊断增强</b>：书架按下反馈不再触发整页 GL16（约 550ms 阻塞导致抬手被吞、书打不开）——改为 DU 短相 + 书架专用 AREA 快速分支 + TAP 容差兜底；180° 触摸映射只作用于阅读页/目录；新增加速度计 probe/raw/重试日志（`[orient]`），并核对「自适应阅读方向」开关映射。</li></ul>
       </article>
     </div>
 
@@ -242,7 +243,7 @@
     </details>
     <details>
       <summary>怎么确认刷进去了、是这一版？</summary>
-      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.65</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
+      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.66</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
     </details>
     <details>
       <summary>刷到一半失败 / 断线了怎么办</summary>
@@ -272,7 +273,7 @@
 
 <footer>
   <div class="wrap">
-    <p>页屿 PageIsle · 1.15.65（基于官方 0.3.3-rc109）· 镜像 5,053,328 字节 · sha256 50fa2abb…ab32ea</p>
+    <p>页屿 PageIsle · 1.15.66（基于官方 0.3.3-rc109）· 镜像 5,055,344 字节 · sha256 2ecabe62…a79c6e</p>
     <p>页面与固件由 mindreset 构建；esptool-js / esp-web-tools © Espressif Systems，Apache-2.0。</p>
     <p>代码仓库：<a href="https://github.com/aleksandrov-eink/pageisle" target="_blank" rel="noopener">github.com/aleksandrov-eink/pageisle</a> · 以仓库里的固件与校验值为准。</p>
   </div>
