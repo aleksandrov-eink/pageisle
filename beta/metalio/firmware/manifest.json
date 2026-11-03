@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（页屿自定义 1.15.63，基于官方 0.3.3-rc109）",
-  "version": "1.15.63",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（页屿自定义 1.15.64，基于官方 0.3.3-rc109）",
+  "version": "1.15.64",
   "new_install_prompt_erase": false,
   "builds": [
     {
