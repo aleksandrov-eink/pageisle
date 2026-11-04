@@ -98,11 +98,11 @@
 
       <h2 style="margin-top:26px">固件信息</h2>
       <table class="meta">
-        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.67）</td></tr>
-        <tr><th>版本号</th><td>1.15.67（基于官方 0.3.3-rc109）</td></tr>
-        <tr><th>应用镜像</th><td>5,058,112 字节</td></tr>
-        <tr><th>ota_0 余量</th><td>184,768 字节（3.5%）</td></tr>
-        <tr><th>sha256</th><td><code>d197694f8f2df319ef04280109e86e80b49923f4b29f82f71458655b6bf1f120</code></td></tr>
+        <tr><th>系统名</th><td>Kiikoread Metalio S31（页屿自定义 1.15.68）</td></tr>
+        <tr><th>版本号</th><td>1.15.68（基于官方 0.3.3-rc109）</td></tr>
+        <tr><th>应用镜像</th><td>5,059,760 字节</td></tr>
+        <tr><th>ota_0 余量</th><td>183,120 字节（3.5%）</td></tr>
+        <tr><th>sha256</th><td><code>d6d21744fa37e3f3b647140d4f4f762f345c37e5b2b79dce2a6863f173d61817</code></td></tr>
         <tr><th>在线更新源</th><td>页屿自建 <code>metalio/update.json</code>（不再走官方源，官方包不会再覆盖本机固件）</td></tr>
         <tr><th>官方回退包</th><td><a href="firmware/official-rc109-original.bin">official-rc109-original.bin</a> · 5,004,960 字节 · sha256 <code>d5dfc25f624edb7181af893ca036d5eb24d9ef73f4e9bd7110c1d0d57bf9d171</code></td></tr>
       </table>
@@ -202,7 +202,8 @@
           <li><b>1.15.64 开始转移 Pico 功能（默认行为不变）</b>：①翻转屏幕阅读照搬 Pico 自适应方向——阅读设置新增「自适应阅读方向」开关（默认关），350ms 采样+3 次去抖+轻点校准，支持竖屏两向/手动倒置调试，触摸坐标与手势方向同步映射，锁屏/关机前自动回竖屏；②反色模式底层照搬 Pico epdiy 反色（LUT 镜像/深色 hold/from_white 黑基准），默认关、未接 UI；③书架/封面照搬 Pico 预取/预热/空帧守卫，默认关 A/B。</li>
           <li><b>1.15.65 翻转阅读修复</b>：补齐 Pico 的 SC7A20H 加速度计上电（初始化后轴关闭会读到近零重力、校准永远失败）；打开「自适应阅读方向」或重新开书时立即自动校准（非 Pico 便利补丁）；新增 <code>[orient]</code> 诊断日志（校准成功/跳过/方向切换/传感器未就绪）。自适应默认仍关。</li>
           <li><b>1.15.66 书架点书修复 + 翻转诊断增强</b>：书架按下反馈不再触发整页 GL16（约 550ms 阻塞导致抬手被吞、书打不开）——改为 DU 短相 + 书架专用 AREA 快速分支 + TAP 容差兜底；180° 触摸映射只作用于阅读页/目录；新增加速度计 probe/raw/重试日志（`[orient]`），并核对「自适应阅读方向」开关映射。</li>
-          <li><b>1.15.67 自适应阅读方向重写（默认启用）</b>：改用重力角 atan2 + 相对校准角判定，120ms 采样、35° 双阈值滞回、连续 2 次保持 + 600ms 冷却，未校准也能自动取参考；旧参考向量路径保留为编译期 A/B。每次采样串口打印 <code>[orient] sample</code>，真机一眼定位。</li></ul>
+          <li><b>1.15.67 自适应阅读方向重写（默认启用）</b>：改用重力角 atan2 + 相对校准角判定，120ms 采样、35° 双阈值滞回、连续 2 次保持 + 600ms 冷却，未校准也能自动取参考；旧参考向量路径保留为编译期 A/B。每次采样串口打印 <code>[orient] sample</code>，真机一眼定位。</li>
+          <li><b>1.15.68 清残影大改（默认开启）</b>：引入 linkui 固件逆向所得机制——周期真 GC16 清理 30 页收紧到 <b>15 页</b>（3 分钟兜底）、<b>关机/休眠前白基准 GC16 全刷</b>、<b>长 DU 后 GC16 恢复 DC 平衡</b>（阈值 15）、<b>退出阅读灰阶页后 UI 首帧整屏恢复</b>、首页/锁屏空闲独立清理（5 分钟）；另修复书架按下反馈记账回归。睡眠/电源路径不变，各项均可用 DISPLAY_* 宏回退。</li></ul>
       </article>
     </div>
 
@@ -244,7 +245,7 @@
     </details>
     <details>
       <summary>怎么确认刷进去了、是这一版？</summary>
-      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.67</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
+      <p>刷完开机后：设置 → 升级和恢复 → 顶部「当前版本」应显示 <code>1.15.68</code>；再对照本页的 sha256 与 TF 卡镜像校验值。Markdown 书可以直接用文件管理打开验证。</p>
     </details>
     <details>
       <summary>刷到一半失败 / 断线了怎么办</summary>
@@ -274,7 +275,7 @@
 
 <footer>
   <div class="wrap">
-    <p>页屿 PageIsle · 1.15.67（基于官方 0.3.3-rc109）· 镜像 5,058,112 字节 · sha256 d197694f…f1f120</p>
+    <p>页屿 PageIsle · 1.15.68（基于官方 0.3.3-rc109）· 镜像 5,059,760 字节 · sha256 d6d21744…d61817</p>
     <p>页面与固件由 mindreset 构建；esptool-js / esp-web-tools © Espressif Systems，Apache-2.0。</p>
     <p>代码仓库：<a href="https://github.com/aleksandrov-eink/pageisle" target="_blank" rel="noopener">github.com/aleksandrov-eink/pageisle</a> · 以仓库里的固件与校验值为准。</p>
   </div>
