@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.93 最小音乐播放器：/sdcard/music 两级歌单 + MP3/WAV/FLAC + 后台播放；阅读与刷新行为与 1.15.92 完全一致；基于官方 0.3.3-rc109）",
-  "version": "1.15.93",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.94 特色功能一级入口 + 五栏导航；音乐移入特色页；阅读/书架/设置/刷新与 1.15.93 完全一致；基于官方 0.3.3-rc109）",
+  "version": "1.15.94",
   "new_install_prompt_erase": true,
   "builds": [
     {
