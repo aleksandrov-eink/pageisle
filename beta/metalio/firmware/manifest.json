@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.103 播放速度与音高修复；阅读/书架/设置/刷新与 1.15.100 完全一致；基于官方 0.3.3-rc109）",
-  "version": "1.15.103",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.104 音乐时钟跟随与局部刷新；阅读/书架/设置/刷新与 1.15.100 完全一致；基于官方 0.3.3-rc109）",
+  "version": "1.15.104",
   "new_install_prompt_erase": true,
   "builds": [
     {
