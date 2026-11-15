@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.108 音乐页版面修正与首页音乐小组件；基础与 1.15.107 一致、新增首页音乐小组件（歌名/歌手/上一首/暂停/下一首）、音乐播放页版面重排、开机字体兜底与 font_boot 日志；基于官方 0.3.3-rc109）",
-  "version": "1.15.108",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.109 背景 WebP 修复与性能基线日志；基础与 1.15.108 一致、新增阅读背景 WebP 解码、开书 parse/layout 分段计时、退出阅读的 reader perf 汇总日志；基于官方 0.3.3-rc109）",
+  "version": "1.15.109",
   "new_install_prompt_erase": true,
   "builds": [
     {
