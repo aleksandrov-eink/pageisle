@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.101 播放通道时钟源 + 按键方向；阅读/书架/设置/刷新与 1.15.100 完全一致；基于官方 0.3.3-rc109）",
-  "version": "1.15.101",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.102 USB 读卡内存不足修复；阅读/书架/设置/刷新与 1.15.100 完全一致；基于官方 0.3.3-rc109）",
+  "version": "1.15.102",
   "new_install_prompt_erase": true,
   "builds": [
     {
