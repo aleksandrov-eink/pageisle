@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.109 背景 WebP 修复与性能基线日志；基础与 1.15.108 一致、新增阅读背景 WebP 解码、开书 parse/layout 分段计时、退出阅读的 reader perf 汇总日志；基于官方 0.3.3-rc109）",
-  "version": "1.15.109",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（1.15.110 行距 100–150% 与旋转锚点；基础与 1.15.109 一致、新增 Pico 同款 51 档行距、旋转往返不再向后漂页；基于官方 0.3.3-rc109）",
+  "version": "1.15.110",
   "new_install_prompt_erase": true,
   "builds": [
     {
