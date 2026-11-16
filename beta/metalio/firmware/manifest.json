@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（1.16.0 版本号进 1.16、二级页面刷新对齐 Pico；基础与 1.15.118 一致、进设置子页不再整屏闪，基于官方 0.3.3-rc109）",
-  "version": "1.16.0",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（1.16.1 流畅性收尾：导航少一次电子纸扫描，概览页多一行界面耗时；基础与 1.16.0 一致，基于官方 0.3.3-rc109）",
+  "version": "1.16.1",
   "new_install_prompt_erase": true,
   "builds": [
     {
