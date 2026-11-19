@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 · Metalio S31（1.23.2 计划 A：白色目标恢复厂商原序列——E0470_TRIM_WHITE_SAT_CUT 回 0，18/19 拍一个不裁；设置页翻页清理收紧到每 3 次、阅读自动全刷默认 5 页；全刷路线与 from_white 未改，基础与 1.16.1 一致，基于官方 0.3.3-rc109）",
-  "version": "1.23.2",
+  "name": "页屿 PageIsle 内测版 · Metalio S31（1.23.3 兜底节奏退回：设置页每 6 次翻页、阅读自动全刷默认 10 页；剂量仍是计划 A 的厂商原序列 E0470_TRIM_WHITE_SAT_CUT=0；全刷路线与 from_white 未改，基础与 1.16.1 一致，基于官方 0.3.3-rc109）",
+  "version": "1.23.3",
   "new_install_prompt_erase": true,
   "builds": [
     {
