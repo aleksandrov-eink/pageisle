@@ -1,6 +1,6 @@
 {
-  "name": "页屿 PageIsle 内测版 1.16.9",
-  "version": "0.3.3-rc99",
+  "name": "页屿 PageIsle 内测版 1.16.10",
+  "version": "1.16.10",
   "new_install_prompt_erase": true,
   "builds": [
     {
